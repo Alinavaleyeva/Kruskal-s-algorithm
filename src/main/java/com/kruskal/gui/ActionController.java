@@ -3,14 +3,17 @@ package com.kruskal.gui;
 import com.kruskal.controlstructures.Mediator;
 import com.kruskal.fileparser.FileFormatException;
 import com.kruskal.graph.GraphConnectednessExeption;
+import com.kruskal.kruskalalgorithm.Kruskal;
 import com.kruskal.kruskalalgorithm.StepMessage;
 import com.kruskal.shapeview.EdgeView;
 import com.kruskal.shapeview.NodeView;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.stage.FileChooser;
@@ -40,6 +43,8 @@ public class ActionController {
     @FXML
     private Button runAlgorithmButton;
     @FXML
+    private Button runAlgButton;
+    @FXML
     private Button saveGraphButton;
     @FXML
     private Button uploadGraphButton;
@@ -53,6 +58,7 @@ public class ActionController {
     private NodeView startNode;
     private NodeView endNode;
     private Stage stage;
+    private Kruskal algoritm;
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -65,6 +71,7 @@ public class ActionController {
             currentState.setText("Run Algorithm");
             currentState.setOpacity(1);
             nextStepButton.setDisable(false);
+            runAlgButton.setDisable(false);
             setDisability(true);
         } catch (GraphConnectednessExeption exception) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -72,7 +79,25 @@ public class ActionController {
             alert.showAndWait();
         }
     }
+    public void onRunAlgButtonClick() {
+        try {
+            // Предполагается, что у mediator есть метод startAlgorithm(), который запускает алгоритм до конца
+            mediator.startAlgorithm();
 
+            // Обновляем UI соответствующим образом
+            currentState.setText("Algorithm Finished");
+            currentState.setOpacity(1);
+            nextStepButton.setDisable(true); // Предполагается, что кнопка следующего шага должна быть отключена после завершения алгоритма
+            runAlgButton.setDisable(true); // Предполагается, что кнопка запуска алгоритма должна быть отключена после его завершения
+            previousStepButton.setDisable(false);
+            setDisability(true); // Предполагается, что это метод для установки всех кнопок в состояние "неактивно"
+        } catch (GraphConnectednessExeption exception) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(exception.getMessage());
+            alert.showAndWait();
+            createErrorAlertMessage(exception.getMessage());
+        }
+    }
     @FXML
     protected void onUploadGraphButtonClick() {
         currentState.setText("Current state");
@@ -123,6 +148,7 @@ public class ActionController {
         } catch (Exception exception) {
             createErrorAlertMessage(exception.getMessage());
         }
+
     }
 
     @FXML
@@ -184,13 +210,16 @@ public class ActionController {
             mainPane.setOnMouseClicked(event -> {
                 if (startNode == null) {
                     startNode = findNode(event.getX(), event.getY());
+                    startNode.setStroke(Color.rgb(255,0,0));
                 } else {
                     endNode = findNode(event.getX(), event.getY());
                     if (endNode != null && !endNode.equals(startNode)) {
                         String inputWeight = runAlert();
                         int weight = !inputWeight.equals("") ? Integer.parseInt(inputWeight) : 1;
                         mediator.sendRequest(new ActionMessage(State.ADDEDGE, startNode.getIdNumber(), endNode.getIdNumber(), weight));
+                        startNode.setStroke(Color.rgb(0,0,0));
                         startNode = null;
+                        endNode.setStroke(Color.rgb(0,0,0));
                         endNode = null;
                     }
                 }
@@ -246,8 +275,10 @@ public class ActionController {
                 if (event.getButton() == MouseButton.PRIMARY) {
                     if (startNode == null) {
                         startNode = findNode(event.getX(), event.getY());
+                        startNode.setStroke(Color.rgb(255,0,0));
                     } else {
                         mediator.sendRequest(new ActionMessage(State.REPLACENODE, event.getX(), event.getY(), startNode.getIdNumber()));
+                        startNode.setStroke(Color.rgb(0,0,0));
                         startNode = null;
                     }
                 } else if (event.getButton() == MouseButton.SECONDARY) {
@@ -256,6 +287,7 @@ public class ActionController {
             });
         } catch (Exception exception) {
             createErrorAlertMessage(exception.getMessage());
+            startNode.setStroke(Color.rgb(0,0,0));
         }
     }
 
@@ -342,4 +374,6 @@ public class ActionController {
         alert.showAndWait();
         mediator.sendRequest(new ActionMessage(State.RESTART));
     }
+
+
 }

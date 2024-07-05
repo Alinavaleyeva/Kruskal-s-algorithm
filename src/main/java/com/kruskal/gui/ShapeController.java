@@ -48,6 +48,6 @@ public class ShapeController {
     }
 
     public void paintEdgeDefault(StepMessage stepMessage) {
-        shapeContainer.colorEdge(stepMessage.getEdgeId(), Color.rgb(157, 0, 255));
+        shapeContainer.colorEdge(stepMessage.getEdgeId(), Color.rgb(0, 0, 0));
     }
 }

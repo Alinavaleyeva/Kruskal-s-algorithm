@@ -11,5 +11,7 @@ public enum State {
     RUNALGORITHM,
     NEXTSTEP,
     RESTART,
-    PREVIOUSSTEP
+    PREVIOUSSTEP,
+    RUNALG
+
 }
