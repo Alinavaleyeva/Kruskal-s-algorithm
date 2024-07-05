@@ -54,6 +54,15 @@ public class Mediator {
                     throw new GraphConnectednessExeption("Graph is not connected");
                 }
             }
+            case RUNALG -> {
+                while (algorithm.isFinish()) {
+                    StepMessage stepMessage = algorithm.makeStep();
+                    actionController.printMessage(stepMessage);
+                    shapeController.paintEdge(stepMessage);
+                }
+                actionController.printTreeWeight(algorithm.getCurrentTreeWeight());
+                //actionController.disableFinishAlgorithmButton(); // Подразумевается, что есть метод для отключения кнопки
+            }
             case NEXTSTEP -> {
                 StepMessage stepMessage = algorithm.makeStep();
                 actionController.printMessage(stepMessage);
@@ -72,5 +81,13 @@ public class Mediator {
                 }
             }
         }
+    }
+    public void startAlgorithm() {
+        while (algorithm.isFinish()) {
+            StepMessage stepMessage = algorithm.makeStep();
+            actionController.printMessage(stepMessage);
+            shapeController.paintEdge(stepMessage);
+        }
+        actionController.printTreeWeight(algorithm.getCurrentTreeWeight());
     }
 }
