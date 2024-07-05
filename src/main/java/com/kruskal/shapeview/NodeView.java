@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NodeView extends Circle {
-    private final int idNumber;
+    private int idNumber; // Удален модификатор final
     private final Text text;
     private final List<EdgeView> incidentEdgeIdList = new ArrayList<>();
 
@@ -20,8 +20,8 @@ public class NodeView extends Circle {
     public NodeView(double x, double y, double radius, Paint paint, int idNumber) {
         super(x, y, radius, paint);
         this.idNumber = idNumber;
-        this.text = new Text(x, y, Integer.toString(idNumber));
-        this.text.setStyle("-fx-font-size: 20");
+        this.text = new Text(x-7, y+7, Integer.toString(idNumber));
+        this.text.setStyle("-fx-font-size: 25");
     }
 
     public Text getText() {
@@ -42,5 +42,10 @@ public class NodeView extends Circle {
 
     public boolean isStartVertex(EdgeView edge) {
         return edge.getStartNode().equals(this);
+    }
+
+    public void setIdNumber(int idNumber) {
+        this.idNumber = idNumber;
+        this.text.setText(String.valueOf(idNumber)); // Обновляем текстовое представление идентификатора
     }
 }

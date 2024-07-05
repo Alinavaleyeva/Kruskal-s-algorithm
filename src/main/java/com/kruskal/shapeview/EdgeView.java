@@ -43,9 +43,9 @@ public class EdgeView extends Line {
         this.weight = weight;
         this.weightText = new Text(Integer.toString(weight));
         this.weightText.setStyle("-fx-fill: #000000; -fx-font-weight: bold");
-        this.textFlow.setStyle("-fx-background-color: #f2bff7");
-        this.textFlow.setPrefWidth(40);
-        this.textFlow.setPrefHeight(20);
+        this.textFlow.setStyle("-fx-background-color: #F2BFF7FF;");
+        this.textFlow.setPrefWidth(25);
+        this.textFlow.setPrefHeight(25);
         this.textFlow.setTextAlignment(TextAlignment.CENTER);
     }
     public void setAdjacentNodes(NodeView startNode, NodeView endNode) {

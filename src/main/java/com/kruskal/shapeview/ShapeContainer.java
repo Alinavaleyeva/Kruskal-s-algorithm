@@ -22,6 +22,8 @@ public class ShapeContainer {
         NodeView node = new NodeView(xCoordinate, yCoordinate, radius, color, nodeId);
         nodeViewList.add(node);
         pane.getChildren().addAll(node, node.getText());
+        redrawGraph(); // Перерисовываем граф после добавления узла
+
     }
 
     public void createEdge(int startNodeId, int endNodeId, int weight, int edgeId) {
@@ -43,11 +45,16 @@ public class ShapeContainer {
         edgeView.setAdjacentNodes(startNode, endNode);
         edgeView.setStroke(Color.BLACK);
         edgeView.setStrokeWidth(5d);
-        edgeView.getTextFlow().setLayoutX((edgeView.getEndX() + edgeView.getStartX()) / 2 - 20);
+        edgeView.getTextFlow().setLayoutX((edgeView.getEndX() + edgeView.getStartX()) / 2 - 10);
         edgeView.getTextFlow().setLayoutY((edgeView.getEndY() + edgeView.getStartY()) / 2 - 10);
-        edgeView.getTextFlow().getChildren().add(edgeView.getWeightText());
+        edgeView.getWeightText().setX((edgeView.getEndX() + edgeView.getStartX()) / 2-2.5); // Позиция X для текста веса
+        edgeView.getWeightText().setY((edgeView.getEndY() + edgeView.getStartY()) / 2+2); // Позиция Y для текста веса
+
+        // Добавление ребра, текста веса и текстового потока на панель
+        pane.getChildren().addAll(edgeView, edgeView.getTextFlow(), edgeView.getWeightText());
+
         edgeViewList.add(edgeView);
-        pane.getChildren().addAll(edgeView, edgeView.getTextFlow());
+        redrawGraph(); // Перерисовываем граф после добавления ребра
     }
 
     public void removeNode(int nodeId) {
@@ -92,6 +99,26 @@ public class ShapeContainer {
             }
         }
     }
+    public void redrawGraph() {
+        // Очистка панели
+        pane.getChildren().clear();
+
+        // Добавляем все рёбра
+        for (EdgeView edge : edgeViewList) {
+            pane.getChildren().addAll(edge, edge.getTextFlow());
+        }
+
+        // Добавляем все узлы
+        for (NodeView node : nodeViewList) {
+            pane.getChildren().addAll(node, node.getText());
+        }
+
+        // Добавляем веса рёбер после отрисовки всех рёбер и узлов
+        for (EdgeView edge : edgeViewList) {
+            pane.getChildren().add(edge.getWeightText());
+        }
+    }
+
 
     public void clear() {
         nodeViewList.clear();
@@ -112,11 +139,15 @@ public class ShapeContainer {
                         edge.setStartY(y);
                         edge.getTextFlow().setLayoutX((edge.getEndX() + edge.getStartX()) / 2 - 10);
                         edge.getTextFlow().setLayoutY((edge.getEndY() + edge.getStartY()) / 2 - 10);
+                        edge.getWeightText().setX((edge.getEndX() + edge.getStartX()) / 2); // Обновление X для текста веса
+                        edge.getWeightText().setY((edge.getEndY() + edge.getStartY()) / 2); // Обновление Y для текста веса
                     } else if (node.hasIncidentEdge(edge)) {
                         edge.setEndX(x);
                         edge.setEndY(y);
                         edge.getTextFlow().setLayoutX((edge.getEndX() + edge.getStartX()) / 2 - 10);
                         edge.getTextFlow().setLayoutY((edge.getEndY() + edge.getStartY()) / 2 - 10);
+                        edge.getWeightText().setX((edge.getEndX() + edge.getStartX()) / 2); // Обновление X для текста веса
+                        edge.getWeightText().setY((edge.getEndY() + edge.getStartY()) / 2); // Обновление Y для текста веса
                     }
                 }
                 break;
