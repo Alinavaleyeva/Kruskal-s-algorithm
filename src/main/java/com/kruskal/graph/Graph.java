@@ -1,9 +1,9 @@
 package com.kruskal.graph;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Graph {
     private final List<Node> nodes;
@@ -172,3 +172,4 @@ public class Graph {
         return data;
     }
 }
+
