@@ -72,6 +72,8 @@ public class ShapeContainer {
                         pane.getChildren().remove(edge);
                         needToBeDeletedEdge.add(edge);
                         node.removeEdge(edge);
+                        // Удаление текста числа ребра
+                        pane.getChildren().remove(edge.getWeightText());
                     }
                 }
                 for (EdgeView edge : needToBeDeletedEdge) {
@@ -87,6 +89,19 @@ public class ShapeContainer {
         }
     }
 
+//    public void removeEdge(int edgeId) {
+//        for (EdgeView edge : edgeViewList) {
+//            if (edge.getIdNumber() == edgeId) {
+//                edge.getStartNode().removeEdge(edge);
+//                edge.getEndNode().removeEdge(edge);
+//                edgeViewList.remove(edge);
+//                pane.getChildren().remove(edge.getTextFlow());
+//                pane.getChildren().remove(edge);
+//                break;
+//            }
+//        }
+//    }
+
     public void removeEdge(int edgeId) {
         for (EdgeView edge : edgeViewList) {
             if (edge.getIdNumber() == edgeId) {
@@ -95,6 +110,8 @@ public class ShapeContainer {
                 edgeViewList.remove(edge);
                 pane.getChildren().remove(edge.getTextFlow());
                 pane.getChildren().remove(edge);
+                // Удаление текста числа ребра
+                pane.getChildren().remove(edge.getWeightText());
                 break;
             }
         }
