@@ -81,9 +81,7 @@ public class ActionController {
     }
     public void onRunAlgButtonClick() {
         try {
-            // Предполагается, что у mediator есть метод startAlgorithm(), который запускает алгоритм до конца
-            mediator.startAlgorithm();
-
+            mediator.sendRequest(new ActionMessage(State.PREVIOUSSTEP));
             // Обновляем UI соответствующим образом
             currentState.setText("Algorithm Finished");
             currentState.setOpacity(1);
@@ -142,6 +140,7 @@ public class ActionController {
     protected void onNextStepButtonClick() {
         if (previousStepButton.isDisable()) {
             previousStepButton.setDisable(false);
+            runAlgButton.setDisable(true);
         }
         try {
             mediator.sendRequest(new ActionMessage(State.NEXTSTEP));
@@ -155,6 +154,7 @@ public class ActionController {
     protected void onPreviousStepButtonClick() {
         if (nextStepButton.isDisable()) {
             nextStepButton.setDisable(false);
+            runAlgButton.setDisable(true);
         }
         try {
             mediator.sendRequest(new ActionMessage(State.PREVIOUSSTEP));
@@ -217,9 +217,9 @@ public class ActionController {
                         String inputWeight = runAlert();
                         int weight = !inputWeight.equals("") ? Integer.parseInt(inputWeight) : 1;
                         mediator.sendRequest(new ActionMessage(State.ADDEDGE, startNode.getIdNumber(), endNode.getIdNumber(), weight));
-                        startNode.setStroke(Color.rgb(0,0,0));
+                        startNode.setStroke(Color.rgb(157,0,253));
                         startNode = null;
-                        endNode.setStroke(Color.rgb(0,0,0));
+                        endNode.setStroke(Color.rgb(157,0,253));
                         endNode = null;
                     }
                 }
@@ -278,7 +278,7 @@ public class ActionController {
                         startNode.setStroke(Color.rgb(255,0,0));
                     } else {
                         mediator.sendRequest(new ActionMessage(State.REPLACENODE, event.getX(), event.getY(), startNode.getIdNumber()));
-                        startNode.setStroke(Color.rgb(0,0,0));
+                        startNode.setStroke(Color.rgb(157,0,253));
                         startNode = null;
                     }
                 } else if (event.getButton() == MouseButton.SECONDARY) {
@@ -287,7 +287,7 @@ public class ActionController {
             });
         } catch (Exception exception) {
             createErrorAlertMessage(exception.getMessage());
-            startNode.setStroke(Color.rgb(0,0,0));
+            startNode.setStroke(Color.rgb(157,0,253));
         }
     }
 
