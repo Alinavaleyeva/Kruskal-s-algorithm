@@ -1,5 +1,4 @@
-package com.kruskal.algorithm;
-
+package com.kruskal.kruskalalgorithm;
 import com.kruskal.graph.EdgeData;
 
 public class StepMessage {

@@ -1,4 +1,4 @@
-package com.kruskal.algorithm;
+package com.kruskal.kruskalalgorithm;
 
 public enum StepMessageType {
     EDGEADDED,

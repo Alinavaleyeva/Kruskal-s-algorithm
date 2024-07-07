@@ -1,9 +1,12 @@
-package com.kruskal.algorithm;
+package com.kruskal.kruskalalgorithm;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.kruskal.graph.EdgeData;
 import com.kruskal.graph.Graph;
-
-import java.util.*;
 
 public class Kruskal {
     private final List<StepMessage> steps;
@@ -100,6 +103,10 @@ public class Kruskal {
     public int getCurrentTreeWeight(){
         return edgesWeightSum;
     }
-    
 
+
+    public boolean isFinish() {
+        // Алгоритм завершен, если все ребра обработаны и нет новых ребер для добавления
+        return connectedNodes.size() != 1 && !edges.isEmpty();
+    }
 }
